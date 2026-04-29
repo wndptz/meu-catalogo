@@ -22,6 +22,7 @@ DEFAULT_TITULO = "Meu Catálogo de Artesanato"
 DEFAULT_WHATSAPP = ""          # deixe vazio para não exibir botão
 DEFAULT_TEXTO_APRES = "Bem-vindos! Conheça nossas peças artesanais."
 DEFAULT_FORMULARIO = ""        # link opcional
+DEFAULT_TITULO_ITENS = "Nossas peças"
 
 # ========== FUNÇÕES DE LEITURA ==========
 def carregar_config():
@@ -30,7 +31,8 @@ def carregar_config():
         "titulo": DEFAULT_TITULO,
         "whatsapp": DEFAULT_WHATSAPP,
         "texto_apresentacao": DEFAULT_TEXTO_APRES,
-        "formulario_link": DEFAULT_FORMULARIO
+        "formulario_link": DEFAULT_FORMULARIO,
+        "titulo_itens": DEFAULT_TITULO_ITENS
     }
     if os.path.exists(ARQUIVO_CONFIG):
         with open(ARQUIVO_CONFIG, "r", encoding="utf-8") as f:
@@ -264,7 +266,7 @@ def gerar_html(produtos, config):
     </header>
 
     <section>
-        <h2 style="margin-bottom: 1rem;">🧶 Nossas peças</h2>
+        <h2 style="margin-bottom: 1rem;">{config['titulo_itens']}</h2>
         <div class="produtos-grid" id="produtos-grid">
             <!-- Cards serão preenchidos via JS -->
         </div>
