@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artesanato da Ana</title>
+    <style>
+        /* Reset e estilos básicos */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #faf8f5;
+            color: #2c2b28;
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #b45f2b;
+            margin-bottom: 0.5rem;
+        }
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin: 1rem 0;
+            transition: 0.2s;
+        }
+        .whatsapp-btn:hover { background-color: #128C7E; }
+        .apresentacao {
+            max-width: 700px;
+            margin: 1.5rem auto;
+            font-size: 1.1rem;
+            color: #5e5b57;
+        }
+        .produtos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        .card-imagem {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: #e6e0d8;
+        }
+        .card-conteudo {
+            padding: 1.2rem;
+        }
+        .card-titulo {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #b45f2b;
+        }
+        .card-descricao {
+            color: #4a4a46;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .card-botao {
+            background: #f0ede8;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: #8e8a84;
+            font-size: 0.8rem;
+        }
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+        .modal-conteudo {
+            max-width: 900px;
+            width: 90%;
+            background: white;
+            border-radius: 1rem;
+            padding: 1.8rem;
+            position: relative;
+            margin: 2rem auto;
+        }
+        .fechar-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #aaa;
+        }
+        .modal-titulo {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .modal-imagens {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .modal-imagens img {
+            max-width: 140px;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .whatsapp-encomenda, .formulario-link {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            margin-top: 1rem;
+            margin-right: 0.8rem;
+        }
+        .formulario-link {
+            background: #6c757d;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Artesanato da Ana</h1>
+        <a class="whatsapp-btn" href="https://wa.me/5519982713541?text=Olá! Vi seu catálogo e tenho interesse." target="_blank">📱 Fale conosco pelo WhatsApp</a>
+        <div class="apresentacao">Peças exclusivas, feitas à mão com materiais naturais.</div>
+    </header>
+
+    <section>
+        <h2 style="margin-bottom: 1rem;">🧶 Nossas peças</h2>
+        <div class="produtos-grid" id="produtos-grid">
+            <!-- Cards serão preenchidos via JS -->
+        </div>
+    </section>
+    <footer>
+        <p>© 2026 Artesanato da Ana - Feito à mão</p>
+    </footer>
+</div>
+
+<!-- Modal -->
+<div id="modal" class="modal">
+    <div class="modal-conteudo">
+        <span class="fechar-modal" onclick="fecharModal()">&times;</span>
+        <div id="modal-body"></div>
+    </div>
+</div>
+
+<script>
+    const produtos = [{"nome": "ceramica-feia-1", "descricao": "Ceramica feia.\nExemplo de produto para o catálogo (esta peça não existe)", "imagens": ["produtos/ceramica-feia-1/ceramica-feia-1.png"], "imagem_principal": "produtos/ceramica-feia-1/ceramica-feia-1.png"}, {"nome": "ceramica-feia-2", "descricao": "Ceramica feia 2.\nExemplo de produto para o catálogo (esta peça não existe)", "imagens": ["produtos/ceramica-feia-2/ceramica-feia-2.png"], "imagem_principal": "produtos/ceramica-feia-2/ceramica-feia-2.png"}, {"nome": "ceramica-feia-3", "descricao": "Ceramica feia 3.\nExemplo de produto para o catálogo (esta peça não existe)", "imagens": ["produtos/ceramica-feia-3/ceramica-feia-3.png"], "imagem_principal": "produtos/ceramica-feia-3/ceramica-feia-3.png"}];
+    const whatsappNum = "5519982713541";
+    const formularioLink = "";
+
+    function gerarCards() {
+        const grid = document.getElementById('produtos-grid');
+        grid.innerHTML = '';
+        produtos.forEach((p, idx) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.onclick = () => abrirModal(idx);
+            card.innerHTML = `
+                <img class="card-imagem" src="${p.imagem_principal}" alt="${p.nome}">
+                <div class="card-conteudo">
+                    <h3 class="card-titulo">${p.nome}</h3>
+                    <p class="card-descricao">${p.descricao.substring(0, 90)}${p.descricao.length > 90 ? '...' : ''}</p>
+                    <button class="card-botao">Ver mais</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function abrirModal(idx) {
+        const p = produtos[idx];
+        let imagensHtml = '<div class="modal-imagens">';
+        p.imagens.forEach(img => {
+            imagensHtml += `<img src="${img}" onclick="window.open('${img}', '_blank')" title="Clique para ampliar">`;
+        });
+        imagensHtml += '</div>';
+        const msgWhats = `Olá! Vi o produto *${p.nome}* no seu catálogo e gostaria de encomendar.`;
+        const whatsLink = `https://wa.me/${whatsappNum}?text=${encodeURIComponent(msgWhats)}`;
+        let botoes = '';
+        if (whatsappNum) botoes += `<a class="whatsapp-encomenda" href="${whatsLink}" target="_blank">📦 Encomendar via WhatsApp</a>`;
+        if (formularioLink) botoes += `<a class="formulario-link" href="${formularioLink}" target="_blank">📝 Preencher formulário</a>`;
+        
+        document.getElementById('modal-body').innerHTML = `
+            <h2 class="modal-titulo">${p.nome}</h2>
+            ${imagensHtml}
+            <p><strong>Descrição:</strong></p>
+            <p style="white-space: pre-wrap;">${p.descricao}</p>
+            ${botoes}
+        `;
+        document.getElementById('modal').style.display = 'flex';
+    }
+
+    function fecharModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+    window.onclick = function(event) {
+        const modal = document.getElementById('modal');
+        if (event.target === modal) fecharModal();
+    };
+    gerarCards();
+</script>
+</body>
+</html>
